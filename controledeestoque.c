@@ -11,7 +11,6 @@ int carregar_estoque(char nomes[][100], int quantidades[]) {
     }
 
     int total = 0;
-    // Leitura do nome e quantidade de cada item do arquivo
     while (fscanf(file, "%s", nomes[total]) == 1) {
         fscanf(file, "%d", &quantidades[total]);
         total++;
@@ -37,16 +36,14 @@ int main() {
     int quantidade = 0;
     int quantidade_removida = 0;
 
-    // Vetores para guardar os dados na memória enquanto o programa roda
     char nomes_estoque[100][100];
     int qtd_estoque[100];
     int total_itens;
 
     do {
-        // Carrega os dados atualizados do arquivo a cada ciclo
         total_itens = carregar_estoque(nomes_estoque, qtd_estoque);
 
-        // Validação do menu principal
+
         do {
             printf("\n==================================\n");
             printf("   Controle de Estoque\n");
@@ -57,7 +54,13 @@ int main() {
             printf("3. Listar Estoque\n");
             printf("4. Sair\n");
             printf("Opcao: ");
-            scanf("%d", &operador);
+            
+
+            if (scanf("%d", &operador) != 1) {
+                int c;
+                while ((c = getchar()) != '\n' && c != EOF);
+                operador = 0; 
+            }
             
             if (operador < 1 || operador > 4) {
                 printf("Opcao invalida! Tente novamente.\n");
@@ -65,7 +68,6 @@ int main() {
         } while (operador < 1 || operador > 4);
 
         if (operador == 1) {
-            // Adicionar Item
             printf("Digite o nome do item: ");
             scanf("%s", nome_item);
             printf("Digite a quantidade: ");
@@ -89,7 +91,6 @@ int main() {
             printf("Item adicionado com sucesso!\n");
 
         } else if (operador == 2) {
-            // Remover Item
             printf("Digite o nome do item: ");
             scanf("%s", nome_item);
             printf("Digite a quantidade a ser removida: ");
@@ -112,7 +113,6 @@ int main() {
                     qtd_estoque[indice_encontrado] -= quantidade_removida;
                     
                     if (qtd_estoque[indice_encontrado] == 0) {
-                        
                         for (int i = indice_encontrado; i < total_itens - 1; i++) {
                             strcpy(nomes_estoque[i], nomes_estoque[i + 1]);
                             qtd_estoque[i] = qtd_estoque[i + 1];
@@ -127,7 +127,6 @@ int main() {
             }
 
         } else if (operador == 3) { 
-            // Listar Estoque
             if (total_itens == 0) {
                 printf("O estoque esta vazio.\n");
             } else {
@@ -144,7 +143,12 @@ int main() {
         if (operador >= 1 && operador <= 3) {
             printf("Deseja realizar outra operacao? (s/n): ");
             char resposta;
-            scanf(" %c", &resposta); 
+            
+
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF);
+            
+            scanf("%c", &resposta); 
             if (resposta == 's' || resposta == 'S') {
                 continue; 
             } else {
@@ -152,7 +156,6 @@ int main() {
                 break; 
             }
         } else if (operador == 4) { 
-            // Sair
             printf("Obrigado por usar o Controle de Estoques! Ate a proxima.\n");
             break; 
         }
